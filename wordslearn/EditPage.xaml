@@ -1,0 +1,12 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="wordslearn.EditPage">
+
+    <StackLayout Padding="10">
+        <Entry x:Name="entryName" Placeholder="Name" />
+        <Entry x:Name="entryTranslation" Placeholder="Translation" />
+        <Entry x:Name="entryExplanation" Placeholder="Explanation" />
+        <Entry x:Name="entryCategory" Placeholder="Category" />
+        <Button Text="Save" Clicked="OnSaveClicked" />
+    </StackLayout>
+</ContentPage>
