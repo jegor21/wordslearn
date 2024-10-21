@@ -1,10 +1,11 @@
 ﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="wordslearn.MainPage">
-
+             x:Class="wordslearn.MainPage"
+             Title="Õpime võõrkeelt!">
+        
     <StackLayout Padding="10">
-        <!-- Carousel displaying the words -->
-        <CarouselView x:Name="WordsCarousel" ItemsSource="{Binding Words}" CurrentItemChanged="OnWordSelected">
+        
+        <CarouselView x:Name="WordsCarousel" ItemsSource="{Binding Words}" >
             <CarouselView.ItemTemplate>
                 <DataTemplate>
                     <StackLayout Padding="10">
@@ -17,20 +18,22 @@
             </CarouselView.ItemTemplate>
         </CarouselView>
 
-        <Label Text="Всего слов: " FontSize="Medium" />
+        
+        <Label Text="Total words: " FontSize="Medium" />
         <Label x:Name="totalWordsCountLabel" FontSize="Medium" />
-        <!-- Labels for learned and unlearned word counts -->
-        <Label Text="Выучено слов: " FontSize="Medium" />
+
+        <Label Text="Learned words: " />
         <Label Text="{Binding LearnedCount}" FontSize="Medium" />
 
-        <Label Text="Не выучено слов: " FontSize="Medium" />
+        <Label Text="Not learned words: " />
         <Label Text="{Binding NotLearnedCount}" FontSize="Medium" />
+
 
         <!-- Buttons for adding, editing, and deleting words -->
         <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-            <Button Text="Добавить" Clicked="OnAddWordClicked" />
-            <Button Text="Редактировать" Clicked="OnEditWordClicked" />
-            <Button Text="Удалить" Clicked="OnDeleteWordClicked" />
+            <Button Text="Add" Clicked="OnAddWordClicked" />
+            <Button Text="Edit" Clicked="OnEditWordClicked" />
+            <Button Text="Delete" Clicked="OnDeleteWordClicked" />
         </StackLayout>
     </StackLayout>
 </ContentPage>

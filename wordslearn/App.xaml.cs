@@ -10,7 +10,7 @@
             {
                 if (_database == null)
                 {
-                    _database = new WordDatabase(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "VoorkeelDB.db3"));
+                    _database = new WordDatabase(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "WordsLearnDB.db3"));
                 }
                 return _database;
             }

@@ -6,6 +6,7 @@ namespace wordslearn
     {
         public ObservableCollection<Word> Words { get; set; }
 
+        // Define LearnedCount and NotLearnedCount as public properties
         private int _learnedCount;
         public int LearnedCount
         {
@@ -13,7 +14,7 @@ namespace wordslearn
             set
             {
                 _learnedCount = value;
-                OnPropertyChanged(nameof(LearnedCount));
+                OnPropertyChanged(nameof(LearnedCount));  // Notify that the value has changed
             }
         }
 
@@ -24,30 +25,23 @@ namespace wordslearn
             set
             {
                 _notLearnedCount = value;
-                OnPropertyChanged(nameof(NotLearnedCount));
+                OnPropertyChanged(nameof(NotLearnedCount));  // Notify that the value has changed
             }
         }
-
         public MainPage()
         {
             InitializeComponent();
             Words = new ObservableCollection<Word>();
             BindingContext = this;
+            // Initial load
             LoadWords();
+        }
 
-            // Subscribe to messages for word modifications
-            MessagingCenter.Subscribe<AddPage>(this, "WordModified", (sender) =>
-            {
-                LoadWords();
-            });
-            MessagingCenter.Subscribe<EditPage>(this, "WordModified", (sender) =>
-            {
-                LoadWords();
-            });
-            MessagingCenter.Subscribe<DeletePage>(this, "WordModified", (sender) =>
-            {
-                LoadWords();
-            });
+        // Called every time MainPage appears
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            LoadWords();  // Ensure the word list is reloaded every time the page appears
         }
 
         private async void LoadWords()
@@ -61,32 +55,26 @@ namespace wordslearn
                     Words.Add(word);
                 }
 
-                // Update the learned/unlearned word counts
-                UpdateWordCounts();
+                UpdateWordCounts();  // Update the learned/unlearned word counts
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Ошибка", ex.Message, "OK");
+                await DisplayAlert("Error", ex.Message, "OK");
             }
         }
 
-        // Method to update the labels with word counts
         private void UpdateWordCounts()
         {
             int totalWordsCount = Words.Count;
-            LearnedCount = Words.Count(w => w.Category == "Выучено");
-            NotLearnedCount = Words.Count(w => w.Category == "Не выучено");
+            int learnedCount = Words.Count(w => w.Category == "Learned");
+            int notLearnedCount = Words.Count(w => w.Category == "Not learned");
 
-            totalWordsCountLabel.Text = totalWordsCount.ToString(); // Only this needs label reference
+            totalWordsCountLabel.Text = totalWordsCount.ToString();
+            LearnedCount = learnedCount;  // Update the property
+            NotLearnedCount = notLearnedCount;  // Update the property
         }
 
-        private async void OnWordSelected(object sender, SelectionChangedEventArgs e)
-        {
-            if (e.CurrentSelection.FirstOrDefault() is Word selectedWord)
-            {
-                await Navigation.PushAsync(new DetailsPage(selectedWord));
-            }
-        }
+
 
         private async void OnAddWordClicked(object sender, EventArgs e)
         {
@@ -105,8 +93,15 @@ namespace wordslearn
         {
             if (WordsCarousel.CurrentItem is Word currentWord)
             {
-                await Navigation.PushAsync(new DeletePage(currentWord));
+                bool confirm = await DisplayAlert("Confirmation", $"Delete '{currentWord.Name}'?", "Yes", "No");
+                if (confirm)
+                {
+                    await App.Database.DeleteWordAsync(currentWord);
+                    Words.Remove(currentWord); // Immediately remove from list
+                    UpdateWordCounts();        // Update the word counts
+                }
             }
         }
     }
+
 }

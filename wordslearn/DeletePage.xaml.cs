@@ -21,9 +21,6 @@ namespace wordslearn
         {
             await App.Database.DeleteWordAsync(_word);
 
-            // Notify the MainPage to refresh
-            MessagingCenter.Send(this, "WordDeleted");
-
             await Navigation.PopAsync();
         }
 
