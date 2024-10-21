@@ -20,8 +20,13 @@ namespace wordslearn
         private async void OnDeleteClicked(object sender, EventArgs e)
         {
             await App.Database.DeleteWordAsync(_word);
+
+            // Notify the MainPage to refresh
+            MessagingCenter.Send(this, "WordDeleted");
+
             await Navigation.PopAsync();
         }
+
 
         private async void OnBackClicked(object sender, EventArgs e)
         {

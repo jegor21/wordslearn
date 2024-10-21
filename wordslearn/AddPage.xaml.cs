@@ -18,7 +18,13 @@
             };
 
             await App.Database.SaveWordAsync(newWord);
+
+            // Notify MainPage that a new word has been added
+            MessagingCenter.Send(this, "WordAdded");
+
             await Navigation.PopAsync();
         }
+
+
     }
 }

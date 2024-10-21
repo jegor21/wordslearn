@@ -2,27 +2,27 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="wordslearn.MainPage">
 
-    <ContentPage.Content>
-        <StackLayout>
-            <CarouselView x:Name="WordsCarousel" ItemsSource="{Binding Words}">
-                <CarouselView.ItemTemplate>
-                    <DataTemplate>
-                        <StackLayout Padding="10">
-                            <Label Text="{Binding Name}" FontSize="Large" />
-                            <Label Text="{Binding Translation}" FontSize="Medium" />
-                            <Label Text="{Binding Explanation}" FontSize="Small" />
-                            <Label Text="{Binding Category}" FontSize="Small" />
-                        </StackLayout>
-                    </DataTemplate>
-                </CarouselView.ItemTemplate>
-            </CarouselView>
+    <StackLayout Padding="20">
+        <CarouselView x:Name="WordsCarousel" ItemsSource="{Binding Words}">
+            <CarouselView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Padding="10">
+                        <Label Text="{Binding Name}" FontSize="Large" />
+                        <Label Text="{Binding Translation}" FontSize="Medium" />
+                        <Label Text="{Binding Explanation}" FontSize="Small" />
+                    </StackLayout>
+                </DataTemplate>
+            </CarouselView.ItemTemplate>
+        </CarouselView>
 
-            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-                <Button Text="Добавить" Clicked="OnAddWordClicked" />
-                <Button Text="Редактировать" Clicked="OnEditWordClicked" />
-                <Button Text="Удалить" Clicked="OnDeleteWordClicked" />
-            </StackLayout>
-            <Label Text="{Binding WordCountText}" />
+        <!-- Word Count Label -->
+        <Label Text="{Binding WordCountText}" FontSize="Medium" HorizontalOptions="Center" VerticalOptions="End" />
+
+        <!-- Buttons to Add, Edit, Delete -->
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+            <Button Text="Add" Clicked="OnAddWordClicked" />
+            <Button Text="Edit" Clicked="OnEditWordClicked" />
+            <Button Text="Delete" Clicked="OnDeleteWordClicked" />
         </StackLayout>
-    </ContentPage.Content>
+    </StackLayout>
 </ContentPage>

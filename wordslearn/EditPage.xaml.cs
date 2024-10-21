@@ -28,8 +28,13 @@ namespace wordslearn
             _word.Category = entryCategory.Text;
 
             await App.Database.SaveWordAsync(_word);
+
+            // Notify the MainPage to refresh
+            MessagingCenter.Send(this, "WordEdited");
+
             await Navigation.PopAsync();
         }
+
     }
 
 }
