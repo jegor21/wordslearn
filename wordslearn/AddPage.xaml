@@ -11,8 +11,7 @@
         <Label Text="Explanation" />
         <Entry x:Name="entryExplanation" />
 
-        <Label Text="Category" />
-        <Entry x:Name="entryCategory" />
+     
 
         <Button Text="Save" Clicked="OnSaveWordClicked" />
     </StackLayout>

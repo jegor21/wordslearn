@@ -40,6 +40,9 @@
 
   <ItemGroup>
     <!-- Link XAML and code-behind -->
+    <Compile Update="DetailsPage.xaml.cs">
+      <DependentUpon>DetailsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="AddPage.xaml.cs">
       <DependentUpon>AddPage.xaml</DependentUpon>
     </Compile>
@@ -49,6 +52,12 @@
     <Compile Update="DeletePage.xaml.cs">
       <DependentUpon>DeletePage.xaml</DependentUpon>
     </Compile>
+	<Compile Update="DetailsPage.xaml.cs">
+      <DependentUpon>DetailsPage.xaml</DependentUpon>
+	</Compile>
+	<MauiXaml Update="DetailsPage.xaml">
+	  <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+	</MauiXaml>
     <MauiXaml Update="AddPage.xaml" />
     <MauiXaml Update="EditPage.xaml" />
     <MauiXaml Update="DeletePage.xaml" />

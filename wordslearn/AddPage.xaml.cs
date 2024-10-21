@@ -14,16 +14,18 @@
                 Name = entryName.Text,
                 Translation = entryTranslation.Text,
                 Explanation = entryExplanation.Text,
-                Category = entryCategory.Text
+                Category = "Не выучено"
             };
 
             await App.Database.SaveWordAsync(newWord);
 
-            // Notify MainPage that a new word has been added
-            MessagingCenter.Send(this, "WordAdded");
+            // Send a message to update the word list and counts
+            MessagingCenter.Send(this, "WordModified");
 
             await Navigation.PopAsync();
         }
+
+
 
 
     }

@@ -17,7 +17,7 @@ namespace wordslearn
             entryName.Text = word.Name;
             entryTranslation.Text = word.Translation;
             entryExplanation.Text = word.Explanation;
-            entryCategory.Text = word.Category;
+            
         }
 
         private async void OnSaveClicked(object sender, EventArgs e)
@@ -25,7 +25,7 @@ namespace wordslearn
             _word.Name = entryName.Text;
             _word.Translation = entryTranslation.Text;
             _word.Explanation = entryExplanation.Text;
-            _word.Category = entryCategory.Text;
+            
 
             await App.Database.SaveWordAsync(_word);
 

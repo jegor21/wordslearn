@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace wordslearn
 {
@@ -7,25 +6,26 @@ namespace wordslearn
     {
         public ObservableCollection<Word> Words { get; set; }
 
-        private void SubscribeToMessages()
+        private int _learnedCount;
+        public int LearnedCount
         {
-            MessagingCenter.Subscribe<EditPage>(this, "WordEdited", (senderPage) =>
+            get => _learnedCount;
+            set
             {
-                MainThread.BeginInvokeOnMainThread(() =>
-                {
-                    LoadWords(); // Reload the words after editing
-                });
-                MessagingCenter.Unsubscribe<EditPage>(this, "WordEdited");
-            });
+                _learnedCount = value;
+                OnPropertyChanged(nameof(LearnedCount));
+            }
+        }
 
-            MessagingCenter.Subscribe<DeletePage>(this, "WordDeleted", (senderPage) =>
+        private int _notLearnedCount;
+        public int NotLearnedCount
+        {
+            get => _notLearnedCount;
+            set
             {
-                MainThread.BeginInvokeOnMainThread(() =>
-                {
-                    LoadWords(); // Reload the words after deleting
-                });
-                MessagingCenter.Unsubscribe<DeletePage>(this, "WordDeleted");
-            });
+                _notLearnedCount = value;
+                OnPropertyChanged(nameof(NotLearnedCount));
+            }
         }
 
         public MainPage()
@@ -34,12 +34,21 @@ namespace wordslearn
             Words = new ObservableCollection<Word>();
             BindingContext = this;
             LoadWords();
-            SubscribeToMessages(); // Subscribe to the messages
+
+            // Subscribe to messages for word modifications
+            MessagingCenter.Subscribe<AddPage>(this, "WordModified", (sender) =>
+            {
+                LoadWords();
+            });
+            MessagingCenter.Subscribe<EditPage>(this, "WordModified", (sender) =>
+            {
+                LoadWords();
+            });
+            MessagingCenter.Subscribe<DeletePage>(this, "WordModified", (sender) =>
+            {
+                LoadWords();
+            });
         }
-
-
-        // Property to calculate total word count
-        public string WordCountText => $"Total words: {Words.Count}";
 
         private async void LoadWords()
         {
@@ -51,29 +60,38 @@ namespace wordslearn
                 {
                     Words.Add(word);
                 }
-                OnPropertyChanged(nameof(WordCountText)); // Notify the UI about the word count update
+
+                // Update the learned/unlearned word counts
+                UpdateWordCounts();
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Error", ex.Message, "OK");
+                await DisplayAlert("Ошибка", ex.Message, "OK");
+            }
+        }
+
+        // Method to update the labels with word counts
+        private void UpdateWordCounts()
+        {
+            int totalWordsCount = Words.Count;
+            LearnedCount = Words.Count(w => w.Category == "Выучено");
+            NotLearnedCount = Words.Count(w => w.Category == "Не выучено");
+
+            totalWordsCountLabel.Text = totalWordsCount.ToString(); // Only this needs label reference
+        }
+
+        private async void OnWordSelected(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.CurrentSelection.FirstOrDefault() is Word selectedWord)
+            {
+                await Navigation.PushAsync(new DetailsPage(selectedWord));
             }
         }
 
         private async void OnAddWordClicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new AddPage());
-
-            // Ensure UI updates after the new word is added
-            MessagingCenter.Subscribe<AddPage>(this, "WordAdded", async (senderPage) =>
-            {
-                await MainThread.InvokeOnMainThreadAsync(() =>
-                {
-                    LoadWords();
-                });
-                MessagingCenter.Unsubscribe<AddPage>(this, "WordAdded");
-            });
         }
-
 
         private async void OnEditWordClicked(object sender, EventArgs e)
         {

@@ -6,7 +6,7 @@
         <Entry x:Name="entryName" Placeholder="Name" />
         <Entry x:Name="entryTranslation" Placeholder="Translation" />
         <Entry x:Name="entryExplanation" Placeholder="Explanation" />
-        <Entry x:Name="entryCategory" Placeholder="Category" />
+        
         <Button Text="Save" Clicked="OnSaveClicked" />
     </StackLayout>
 </ContentPage>

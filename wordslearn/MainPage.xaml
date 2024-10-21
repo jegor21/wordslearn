@@ -2,27 +2,35 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="wordslearn.MainPage">
 
-    <StackLayout Padding="20">
-        <CarouselView x:Name="WordsCarousel" ItemsSource="{Binding Words}">
+    <StackLayout Padding="10">
+        <!-- Carousel displaying the words -->
+        <CarouselView x:Name="WordsCarousel" ItemsSource="{Binding Words}" CurrentItemChanged="OnWordSelected">
             <CarouselView.ItemTemplate>
                 <DataTemplate>
                     <StackLayout Padding="10">
                         <Label Text="{Binding Name}" FontSize="Large" />
                         <Label Text="{Binding Translation}" FontSize="Medium" />
                         <Label Text="{Binding Explanation}" FontSize="Small" />
+                        <Label Text="{Binding Category}" FontSize="Small" />
                     </StackLayout>
                 </DataTemplate>
             </CarouselView.ItemTemplate>
         </CarouselView>
 
-        <!-- Word Count Label -->
-        <Label Text="{Binding WordCountText}" FontSize="Medium" HorizontalOptions="Center" VerticalOptions="End" />
+        <Label Text="Всего слов: " FontSize="Medium" />
+        <Label x:Name="totalWordsCountLabel" FontSize="Medium" />
+        <!-- Labels for learned and unlearned word counts -->
+        <Label Text="Выучено слов: " FontSize="Medium" />
+        <Label Text="{Binding LearnedCount}" FontSize="Medium" />
 
-        <!-- Buttons to Add, Edit, Delete -->
+        <Label Text="Не выучено слов: " FontSize="Medium" />
+        <Label Text="{Binding NotLearnedCount}" FontSize="Medium" />
+
+        <!-- Buttons for adding, editing, and deleting words -->
         <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-            <Button Text="Add" Clicked="OnAddWordClicked" />
-            <Button Text="Edit" Clicked="OnEditWordClicked" />
-            <Button Text="Delete" Clicked="OnDeleteWordClicked" />
+            <Button Text="Добавить" Clicked="OnAddWordClicked" />
+            <Button Text="Редактировать" Clicked="OnEditWordClicked" />
+            <Button Text="Удалить" Clicked="OnDeleteWordClicked" />
         </StackLayout>
     </StackLayout>
 </ContentPage>
